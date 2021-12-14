@@ -20,3 +20,7 @@ def ogtri():
     t = np.linspace(0, 130, 500)
     tri_sig= (1+signal.sawtooth( t/20,0.5))/2   
     return tri_sig
+
+def ttri():
+    t = np.linspace(0, 130, 500)
+    return t

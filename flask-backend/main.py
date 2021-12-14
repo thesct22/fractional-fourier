@@ -20,21 +20,28 @@ def getsinefrft():
     alpha = float(request_data)
     vals=sine.frftsine(alpha)
     print(vals.result)
-    response=jsonify({'sine-frft-real' : vals.result.real.tolist(),'sine-frft-imag' : vals.result.imag.tolist()})
+    response=jsonify({'real' : vals.result.real.tolist(),'imag' : vals.result.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
  
 @app.route('/sineft')
 def getsineft():
     vals=sine.ftsine()
-    response=jsonify({'sine-ft-real' : vals.real.tolist(),'sine-ft-imag' : vals.imag.tolist()})
+    response=jsonify({'real' : vals.real.tolist(),'imag' : vals.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
 @app.route('/sineog')
 def getsineog():
     vals=sine.ogsine()
-    response=jsonify({'sine-og' : vals.tolist()})
+    response=jsonify({'og' : vals.tolist()})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return (response)
+
+@app.route('/sinet')
+def getsinet():
+    vals=sine.tsine()
+    response=jsonify({'t' : vals.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
@@ -44,21 +51,28 @@ def getsquarefrft():
     request_data = request.args['alpha']
     alpha = float(request_data)
     vals=square.frftsquare(alpha)
-    response=jsonify({'square-frft-real' : vals.result.real.tolist(),'square-frft-imag' : vals.result.imag.tolist()})
+    response=jsonify({'real' : vals.result.real.tolist(),'imag' : vals.result.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
  
 @app.route('/squareft')
 def getsquareft():
     vals=square.ftsquare()
-    response=jsonify({'square-ft-real' : vals.real.tolist(),'square-ft-imag' : vals.imag.tolist()})
+    response=jsonify({'real' : vals.real.tolist(),'imag' : vals.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
 @app.route('/squareog')
 def getsquareog():
     vals=square.ogsquare()
-    response=jsonify({'square-og' : vals.tolist()})
+    response=jsonify({'og' : vals.tolist()})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return (response)
+
+@app.route('/squaret')
+def getsquaret():
+    vals=square.tsquare()
+    response=jsonify({'t' : vals.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
@@ -68,21 +82,28 @@ def gettrifrft():
     request_data = request.args['alpha']
     alpha = float(request_data)
     vals=tri.frfttri(alpha)
-    response=jsonify({'tri-frft-real' : vals.result.real.tolist(),'tri-frft-imag' : vals.result.imag.tolist()})
+    response=jsonify({'real' : vals.result.real.tolist(),'imag' : vals.result.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
  
 @app.route('/trift')
 def gettrift():
     vals=tri.fttri()
-    response=jsonify({'tri-ft-real' : vals.real.tolist(),'tri-ft-imag' : vals.imag.tolist()})
+    response=jsonify({'real' : vals.real.tolist(),'imag' : vals.imag.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
 @app.route('/triog')
 def gettriog():
     vals=tri.ogtri()
-    response=jsonify({'tri-og' : vals.tolist()})
+    response=jsonify({'og' : vals.tolist()})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return (response)
+
+@app.route('/trit')
+def gettrit():
+    vals=tri.ttri()
+    response=jsonify({'t' : vals.tolist()})
     response.headers.add('Access-Control-Allow-Origin', '*')
     return (response)
 
@@ -91,4 +112,4 @@ if __name__ == '__main__':
  
     # run() method of Flask class runs the application
     # on the local development server.
-    app.run()
+    app.run(debug=True, host='0.0.0.0', port=8080)

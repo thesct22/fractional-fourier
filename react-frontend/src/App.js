@@ -3,6 +3,8 @@ import { MDBRange } from 'mdb-react-ui-kit';
 import Select from 'react-select';
 import axios from 'axios';
 import { backend_url } from './config';
+import LineChart from 'react-linechart';
+import '../node_modules/react-linechart/dist/styles.css';
 
 function App() {
   const [range, setRange] = useState(0.5);
@@ -10,6 +12,10 @@ function App() {
   const [ogGraph,setOgGraph]=useState({});
   const [ftGraph,setFtGraph]=useState({});
   const [fftGraph,setFftGraph]=useState({});
+  const [ttime,setTime]=useState([]);
+  const [ogGraphData, setOgGraphData]=useState(null);
+  const [ftGraphData, setFtGraphData]=useState(null);
+  const [fftGraphData, setFftGraphData]=useState(null);
 
   const options = [
     { value: 'sq', label: 'Square' },
@@ -25,6 +31,9 @@ function App() {
   const selectOnChange=(e)=>{
     setSelect(e.value);
     fetchgraphs(e.value);
+    ogData();
+    ftData();
+    fftData();
   }
 
   const fetchgraphs=(selectValue)=>{
@@ -45,6 +54,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
       })
 
       //ft
@@ -52,6 +62,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFtGraph({ data });
+        ftData();
       })
 
       //og
@@ -59,6 +70,14 @@ function App() {
       .then(res => {
         const data = res.data;
         setOgGraph({ data });
+        ogData();
+      })
+
+      //time
+      axios.get(backend_url+'/squaret')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
       })
     }
 
@@ -77,6 +96,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
       })
 
       //ft
@@ -84,6 +104,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFtGraph({ data });
+        ftData();
       })
 
       //og
@@ -91,6 +112,14 @@ function App() {
       .then(res => {
         const data = res.data;
         setOgGraph({ data });
+        ogData();
+      })
+
+      //time
+      axios.get(backend_url+'/trit')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
       })
     }
 
@@ -108,6 +137,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
       })
 
       //ft
@@ -115,6 +145,7 @@ function App() {
       .then(res => {
         const data = res.data;
         setFtGraph({ data });
+        ftData();
       })
 
       //og
@@ -122,6 +153,14 @@ function App() {
       .then(res => {
         const data = res.data;
         setOgGraph({ data });
+        ogData();
+      })
+      
+      //time
+      axios.get(backend_url+'/sinet')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
       })
     }
     
@@ -144,6 +183,14 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
+      })
+      
+      //time
+      axios.get(backend_url+'/squaret')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
       })
     }
 
@@ -162,6 +209,14 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
+      })
+
+      //time
+      axios.get(backend_url+'/trit')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
       })
     }
 
@@ -179,7 +234,117 @@ function App() {
       .then(res => {
         const data = res.data;
         setFftGraph({ data });
+        fftData();
       })
+      
+      //time
+      axios.get(backend_url+'/sinet')
+      .then(res => {
+        const data = res.data;
+        setTime({ data });
+      })
+    }
+  }
+
+  var ogData=()=>{      
+    if (ttime['data']!==undefined){
+      var r=[]
+      var realData={
+        color: "#FF6633",
+        name: "Real"
+      }
+      var point=[]
+      
+      for(var i=0;i<ttime['data']['t'].length;i++){
+        var obj={}
+        obj['x']=ttime['data']['t'][i];
+        obj['y']=ogGraph['data']['og'][i];
+        point.push(obj)
+      }
+      realData['points']=point
+      r.push(realData)
+      setOgGraphData(r)
+      console.log(ogGraphData)
+    }
+  }
+
+  var ftData=()=>{  
+    if (ttime['data']!==undefined){
+      var r=[]
+
+      //real
+      var realData={
+        color: "#FF6633",
+        name: "Real"
+      }
+      var point=[]
+      for(var i=0;i<ttime['data']['t'].length;i++){
+        var obj={}
+        obj['x']=ttime['data']['t'][i];
+        obj['y']=ftGraph['data']['real'][i];
+        point.push(obj)
+      }
+      realData['points']=point
+
+      r.push(realData)
+
+      //imaginary
+      var imagData={
+        color: "#000000",
+        name: "Imaginary"
+      }
+      var point=[]
+      for(var i=0;i<ttime['data']['t'].length;i++){
+        var obj={}
+        obj['x']=ttime['data']['t'][i];
+        obj['y']=ftGraph['data']['imag'][i];
+        point.push(obj)
+      }
+      imagData['points']=point
+
+      r.push(imagData)
+      setFtGraphData(r)
+      console.log(ftGraphData)
+    }
+  }
+  
+  var fftData=()=>{  
+    if (ttime['data']!==undefined){
+      var r=[]
+
+      //real
+      var realData={
+        color: "#FF6633",
+        name: "Real"
+      }
+      var point=[]
+      for(var i=0;i<ttime['data']['t'].length;i++){
+        var obj={}
+        obj['x']=ttime['data']['t'][i];
+        obj['y']=fftGraph['data']['real'][i];
+        point.push(obj)
+      }
+      realData['points']=point
+
+      r.push(realData)
+
+      //imaginary
+      var imagData={
+        color: "#000000",
+        name: "Imaginary"
+      }
+      var point=[]
+      for(var i=0;i<ttime['data']['t'].length;i++){
+        var obj={}
+        obj['x']=ttime['data']['t'][i];
+        obj['y']=fftGraph['data']['imag'][i];
+        point.push(obj)
+      }
+      imagData['points']=point
+
+      r.push(imagData)
+      setFftGraphData(r)
+      console.log(fftGraphData)
     }
   }
   
@@ -204,7 +369,53 @@ function App() {
           />
         </div>
       </div>
-      
+      <div className='row'>
+        <div className='col-4'>
+          {ogGraphData===null?'':
+            <LineChart 
+              id={"og"}
+              class={"og"}
+              width={400}
+              height={800}
+              data={ogGraphData===null?{}:ogGraphData}
+              hidePoints={true}
+              onPointHover={(point)=> {
+                return `<p class="popup"><b>X value:</b> ${(point.x)}</p><p class="popup"><b>Y value:</b> ${point.y}</p>`
+              }}
+            />
+          }
+        </div>
+        <div className='col-4'>
+          {fftGraphData===null?'':
+            <LineChart 
+              id={"fft"}
+              class={"fft"}
+              width={400}
+              height={800}
+              data={fftGraphData===null?{}:fftGraphData}
+              hidePoints={true}
+              onPointHover={(point)=> {
+                return `<p class="popup"><b>X value:</b> ${(point.x)}</p><p class="popup"><b>Y value:</b> ${point.y}</p>`
+              }}
+            />
+          }
+        </div>
+        <div className='col-4'>
+          {ftGraphData===null?'':
+            <LineChart
+              id={"ft"}
+              class={"ft"}
+              width={400}
+              height={800} 
+              data={ftGraphData===null?{}:ftGraphData}
+              hidePoints={true}
+              onPointHover={(point)=> {
+                return `<p class="popup"><b>X value:</b> ${(point.x)}</p><p class="popup"><b>Y value:</b> ${point.y}</p>`
+              }}
+            />
+          }
+        </div>
+      </div>
     </div>
   );
 }

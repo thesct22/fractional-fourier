@@ -23,3 +23,7 @@ def ogsine():
     time = np.arange(0, 10*(np.pi), 0.1)
     sin_signal = np.sin(time/5)
     return sin_signal
+
+def tsine():
+    time = np.arange(0, 10*(np.pi), 0.1)
+    return time
