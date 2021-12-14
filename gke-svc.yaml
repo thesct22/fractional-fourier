@@ -15,3 +15,23 @@ spec:
     app: "fft-backend"
   type: "LoadBalancer"
   loadBalancerIP: ""
+
+
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "fft-frontend-service"
+  namespace: "default"
+  labels:
+    app: "fft-frontend"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+  selector:
+    app: "fft-frontend"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
+
