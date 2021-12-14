@@ -1,1 +1,1 @@
-export const backend_url='http://127.0.0.1:6969'
+export const backend_url='http://35.224.157.17:8080'

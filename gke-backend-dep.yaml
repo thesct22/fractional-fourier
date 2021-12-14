@@ -1,0 +1,86 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "fft-backend"
+  namespace: "default"
+  labels:
+    app: "fft-backend"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "fft-backend"
+  template:
+    metadata:
+      labels:
+        app: "fft-backend"
+    spec:
+      containers:
+      - name: "fft-backend-sha256-1"
+        image: "gcr.io/frft-335119/fft-backend@sha256:2caca4193563297383c8d0997b453214de8ef0737e2a7d572d345e619641c081"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "fft-backend-hpa-r7pp"
+  namespace: "default"
+  labels:
+    app: "fft-backend"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "fft-backend"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
+
+
+
+
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "fft-frontend"
+  namespace: "default"
+  labels:
+    app: "fft-frontend"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "fft-frontend"
+  template:
+    metadata:
+      labels:
+        app: "fft-frontend"
+    spec:
+      containers:
+      - name: "fft-frontend-sha256-1"
+        image: "gcr.io/frft-335119/fft-frontend@sha256:cce5103de99e4288f4f25fd4e2eee84350535ae23388307b82e4c08984e7e575"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "fft-frontend-hpa-to2c"
+  namespace: "default"
+  labels:
+    app: "fft-frontend"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "fft-frontend"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
